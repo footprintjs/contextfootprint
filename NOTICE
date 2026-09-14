@@ -1,0 +1,8 @@
+ContextFootprint assertion comparison was extracted from AgentFootprint 9.97.0.
+Source: https://github.com/footprintjs/agentfootprint
+Commit: daed2145d8329e6ae49daa91d07d855bb78fb2ac
+Original files: src/integrity/assertion/types.ts and conflicts.ts
+Copyright (c) 2024-present Sanjay Krishna Anbalagan. MIT License.
+
+The comparison behavior is retained. Default key encoding is a JSON tuple;
+consumers preserving recorded legacy keys may supply an explicit key strategy.
