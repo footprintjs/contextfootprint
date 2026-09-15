@@ -81,7 +81,7 @@ Run `npm ci` and `npm run verify`. Verification covers type checking, comparison
 
 ## Release
 
-After reviewing and committing the version, changelog and source on `main`, run `npm run release`. It checks the clean branch and calls npm publication through the verification gate. An authenticated npm publisher (and any required 2FA) is necessary; a source commit or a passing dry run does not mean npm publication succeeded. Check the registry version after publishing.
+After reviewing and committing the version, changelog and source on `main`, run `npm run release`. Use `npm run release -- --dry-run` to exercise the same gate without publishing. The script checks the clean branch and calls npm publication through the verification gate. An authenticated npm publisher (and any required 2FA) is necessary; a source commit or a passing dry run does not mean npm publication succeeded. Check the registry version after publishing.
 
 For later CI releases, `.github/workflows/publish.yml` verifies and packs the release-tagged source before publishing the exact archive with npm trusted publishing. Configure the npm package's trusted publisher for `footprintjs/contextfootprint`, workflow `publish.yml`; the workflow alone does not grant npm access. See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 

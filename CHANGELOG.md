@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1 — release candidate
+## 0.1.1 — 2026-09-15
 
 - Preserve own JSON properties named `__proto__`, including nested objects and known Claim payloads. Previously, distinct values could incorrectly compare equal. Public types, keys and witness ordering are unchanged.
 - Prepare public npm metadata, include runnable examples and gate packing/publication on full verification.
