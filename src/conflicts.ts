@@ -25,7 +25,7 @@ import { assertionKey, comparableValueOf, participates, type Assertion, type Ass
 /** One exclusion: the two-or-more assertions that cannot all be true. */
 export interface Conflict {
   readonly key: string;
-  /** Every distinct-valued assertion on the key, in input order. */
+  /** Every participating assertion on the conflicting key, including equal readings, in input order. */
   readonly assertions: readonly Assertion[];
 }
 
@@ -34,7 +34,9 @@ function renderValue(value: unknown): string {
   const face = comparableValueOf(value);
   return JSON.stringify(face, (_k, v: unknown) => {
     if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
-      const sorted: Record<string, unknown> = {};
+      // JSON object keys are data, including "__proto__". A normal object
+      // would invoke that legacy setter and silently discard a valid reading.
+      const sorted: Record<string, unknown> = Object.create(null);
       for (const key of Object.keys(v as object).sort()) {
         sorted[key] = (v as Record<string, unknown>)[key];
       }

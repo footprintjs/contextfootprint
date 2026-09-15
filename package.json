@@ -1,7 +1,6 @@
 {
   "name": "contextfootprint",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
   "description": "Pure assertion identity and conflict comparison for context integrity.",
   "license": "MIT",
   "repository": { "type": "git", "url": "git+https://github.com/footprintjs/contextfootprint.git" },
@@ -9,6 +8,7 @@
   "bugs": { "url": "https://github.com/footprintjs/contextfootprint/issues" },
   "type": "module",
   "sideEffects": false,
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -18,14 +18,16 @@
       "require": { "types": "./dist/cjs/index.d.ts", "default": "./dist/cjs/index.js" }
     }
   },
-  "files": ["dist", "README.md", "LICENSE", "NOTICE"],
+  "files": ["dist", "examples", "README.md", "CHANGELOG.md", "LICENSE", "NOTICE"],
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "tsc -p tsconfig.esm.json --noEmit && tsc -p tsconfig.cjs.json --noEmit",
     "test": "npm run build && node --test test/*.test.mjs",
-    "test:example": "node examples/compare.mjs",
+    "test:example": "node examples/compare.mjs && node examples/context-boundaries.mjs",
     "test:package": "node scripts/packed-smoke.mjs",
-    "verify": "npm run check && npm test && npm run test:example && npm run test:package"
+    "verify": "npm run check && npm test && npm run test:example && npm run test:package",
+    "prepack": "npm run verify",
+    "release": "node scripts/release.mjs"
   },
   "devDependencies": { "typescript": "5.9.3" }
 }

@@ -1,0 +1,58 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Match the release tag to the package
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: node -e "if (process.env.RELEASE_TAG !== 'v' + require('./package.json').version) throw Error('Release tag does not match package version')"
+      - run: npm ci
+      - run: npm run verify
+      - name: Pack the verified build
+        run: |
+          mkdir release-artifact
+          npm pack --ignore-scripts --pack-destination release-artifact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: release-artifact/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: release-artifact
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@11
+      # Requires an npm trusted publisher for this repository/workflow.
+      # No package dependency install or source lifecycle runs with publish authority.
+      - run: npm publish release-artifact/*.tgz --ignore-scripts --provenance --access public

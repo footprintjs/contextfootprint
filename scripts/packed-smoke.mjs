@@ -13,7 +13,8 @@ try {
   await mkdir(destination, { recursive: true });
   execFileSync('tar', ['-xzf', join(temporary, packed[0].filename), '-C', destination, '--strip-components=1']);
   const manifest = JSON.parse(await readFile(join(destination, 'package.json'), 'utf8'));
-  assert.equal(manifest.private, true);
+  assert.notEqual(manifest.private, true);
+  assert.equal(manifest.publishConfig?.access, 'public');
   assert.equal(manifest.license, 'MIT');
   assert.deepEqual(manifest.dependencies ?? {}, {});
   assert.deepEqual(manifest.peerDependencies ?? {}, {});
@@ -21,6 +22,9 @@ try {
   await writeFile(join(temporary, 'consumer.mjs'), `import {conflictsOf} from 'contextfootprint';\n${operation}\n`);
   await writeFile(join(temporary, 'consumer.cjs'), `const {conflictsOf}=require('contextfootprint');\n${operation}\n`);
   for (const extension of ['mjs', 'cjs']) execFileSync(process.execPath, [join(temporary, `consumer.${extension}`)], { cwd: temporary, stdio: 'inherit' });
+  for (const example of ['compare.mjs', 'context-boundaries.mjs']) {
+    execFileSync(process.execPath, [join(destination, 'examples', example)], { cwd: temporary, stdio: 'inherit' });
+  }
   const types = `import { conflictsOf, type Assertion, type AssertionKeyStrategy } from 'contextfootprint';\nconst readings:readonly Assertion[]=[];\nconst key:AssertionKeyStrategy=a=>a.subject.id;\nconflictsOf(readings,new Set<string>(),key);\n`;
   await writeFile(join(temporary, 'consumer.mts'), types);
   await writeFile(join(temporary, 'consumer.cts'), types);
