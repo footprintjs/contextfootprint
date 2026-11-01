@@ -1,12 +1,22 @@
 # ContextFootprint
 
-Pure assertion identity and conflict comparison, extracted from AgentFootprint's existing context-integrity algebra. A small, synchronous library with zero runtime dependencies and ESM, CommonJS and TypeScript entry points. The 0.x API is intentionally narrow.
+Pure assertion identity and conflict comparison, extracted from [AgentFootprint](https://github.com/footprintjs/agentfootprint)'s existing context-integrity algebra. A small, synchronous library with zero runtime dependencies and ESM, CommonJS and TypeScript entry points. The 0.x API is intentionally narrow.
+
+[Install and example](#try-it) · [Public API](#public-api) · [Evidence and policy boundaries](#evidence-and-policy-boundaries)
 
 The host supplies assertions. ContextFootprint identifies groups of incompatible current readings. It does not collect facts, retrieve references, decide which source is true, validate an answer schema, repair an answer or enforce delivery.
 
 ## Try it
 
-From a source checkout, run `npm ci` and `npm run verify`. This also runs both examples and checks the packed package. To install a reviewed archive before the first registry publication, run `npm pack` here, then `npm install /path/to/contextfootprint-0.1.1.tgz` in the consuming project. Once published, use `npm install contextfootprint`.
+Install the published package:
+
+```bash
+npm install contextfootprint
+```
+
+For a source checkout, run `npm ci` and `npm run verify`. This runs both examples and checks the packed package.
+To test a reviewed source archive locally, run `npm pack` here, then install the resulting archive in the consuming
+project with `npm install /path/to/contextfootprint-0.1.1.tgz`.
 
 ESM and TypeScript use the import below. CommonJS uses `const { conflictsOf } = require('contextfootprint')`. Browser bundlers use the ESM entry; the runtime requires neither Node nor DOM globals.
 

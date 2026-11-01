@@ -1,7 +1,8 @@
 {
   "name": "contextfootprint",
   "version": "0.1.1",
-  "description": "Pure assertion identity and conflict comparison for context integrity.",
+  "description": "Compare supplied assertions for conflicting values by subject, predicate and epoch; zero runtime dependencies.",
+  "keywords": ["typescript", "context-integrity", "assertions", "conflict-detection", "evidence", "context-engineering", "provenance"],
   "license": "MIT",
   "repository": { "type": "git", "url": "git+https://github.com/footprintjs/contextfootprint.git" },
   "homepage": "https://github.com/footprintjs/contextfootprint#readme",
